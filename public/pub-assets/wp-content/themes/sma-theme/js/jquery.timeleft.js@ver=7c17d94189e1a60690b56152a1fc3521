@@ -1,0 +1,101 @@
+/* timeLeft v0.9.3 <github.com/fiedlr/timeLeft> | (c) 2015 Adam Fiedler | @license <opensource.org/licenses/MIT> */
+(function ($) {
+    $.widget('tml.timeLeft', {
+
+        // Inner attributes
+        clock: null, remaining: null, wanted: {},
+
+        // Options
+        options: {
+            remaining: 10000,
+            format: '%Y years %M months %W weeks %D days %h hours %m minutes %s seconds remain...',
+            refreshInterval: 1000,
+            complete: function () {}
+        },
+
+        _create: function () {
+
+            this.remaining = this.options.remaining;
+
+            // Setup
+            this.wanted = {
+                years: this.options.format.search('%Y'),
+                months: this.options.format.search('%M'),
+                weeks: this.options.format.search('%W'),
+                days: this.options.format.search('%D'),
+                hours: this.options.format.search('%h'),
+                minutes: this.options.format.search('%m'),
+                seconds: this.options.format.search('%s')
+            };
+
+            // Sets an interval
+            if (this.refresh() !== false) {
+                this.clock = setInterval(this.refresh.bind(this), this.options.refreshInterval);
+            }
+
+        },
+
+        refresh: function () {
+            var content = this.options.format,
+                temp = this.remaining,
+                result = this;
+
+            if (this.remaining > 0) {
+
+                if (this.wanted.days !== -1) {
+                    var days = Math.floor(temp / 86400);
+                    content = content.replace('%D', days);
+                    temp -= days * 86400;
+                }
+
+                if (this.wanted.hours !== -1) {
+                    var hours = Math.floor(temp / 3600);
+                    if (hours < 10) hours = '0' + hours.toString();
+                    content = content.replace('%h', hours);
+                    temp -= hours * 3600;
+                }
+
+                if (this.wanted.minutes !== -1) {
+                    var minutes = Math.floor(temp / 60);
+                    if (minutes < 10) minutes = '0' + minutes.toString();
+                    content = content.replace('%m', minutes);
+                    temp -= minutes * 60;
+                }
+
+                if (this.wanted.seconds !== -1) {
+                    var seconds = temp;
+                    if (seconds < 10) seconds = '0' + seconds.toString();
+                    content = content.replace('%s', seconds);
+                }
+
+                this.element.html(content);
+
+                --this.remaining;
+
+            } else {
+
+                // Stops the clock
+                this._destroy();
+                this.options.complete();
+
+                // Prevents a double-reaction
+                result = false;
+
+            }
+
+            return result;
+
+        },
+
+        _destroy: function () {
+
+            if (this.clock !== null) {
+                clearInterval(this.clock);
+            }
+
+            this.element.html('');
+
+        }
+
+    });
+})(jQuery);

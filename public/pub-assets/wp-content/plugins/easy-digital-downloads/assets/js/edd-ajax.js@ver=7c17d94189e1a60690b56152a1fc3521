@@ -1,0 +1,22 @@
+var edd_scripts;
+(function ($) {
+    $(document).ready(function () {
+        $('#paypal_checkout_button').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: edd_scripts.ajaxurl,
+                method: 'post',
+                data: {
+                    action: 'sma_paypal_redirect',
+                    nonce: $('#paypal_redirect_nonce').val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (!data.error) {
+                        window.location = data.url;
+                    }
+                }
+            });
+        });
+    });
+})(jQuery)

@@ -1,0 +1,307 @@
+var categoryFilter;
+var runnedFilter = false;
+(function ($) {
+    $('document').ready(function(){
+        categoryFilter = {
+            filtersCount: 0,
+            params: {
+                search: '',
+                category: '',
+                template: '',
+                subcategories: [],
+                sortby: 'newest-releases',
+                page: 1,
+                baselink: '',
+                price_min: 0,
+                price_max: 1000,
+                as_admin: false
+            },
+            getHTML: function () {
+                if(!runnedFilter) {
+                    runnedFilter = true;
+                    $.ajax({
+                        url: global_vars.ajax_url,
+                        data: {
+                            action: 'category_filter',
+                            filter_params: this.params
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            runnedFilter = false;
+                            $('#products-list-container').html(data.products_list);
+                            $('#pagination-container').html(data.pagination);
+
+                            categoryFilter.setLoading(false);
+                            // resize_images();
+                            // load_all_banner_images.called = false;
+                            // product_tooltip_init();
+
+                            $('#pagination-container').on('click', 'a', function (event) {
+                                event.preventDefault();
+                                categoryFilter.setSearchQuery();
+                                categoryFilter.params.page = parseInt($(this).data('page'));
+                                categoryFilter.getHTML();
+                            });
+                            keywords.initButton();
+                            // var homeLink = '';
+                            // var curLink = window.location.href;
+                            // var pos = curLink.indexOf('/page/');
+                            // homeLink = curLink;
+                            // if (pos != -1) {
+                            //     homeLink = curLink.substring(0, pos + 1);
+                            // }
+                            // var links = jQuery('#pagination-container a');
+                            // for (var i = 0; i < links.length; i++) {
+                            //     links[i].href = homeLink + 'page/' + links[i].innerHTML + '/';
+                            // }
+                            //
+                            // var currentPage = 0;
+                            // currentPage = parseInt(jQuery('#pagination-container span.current').html());
+                            // jQuery('#pagination-container a.prev').attr('href', homeLink + 'page/' + (currentPage - 1) + '/');
+                            // jQuery('#pagination-container a.next').attr('href', homeLink + 'page/' + (currentPage + 1) + '/');
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            $('#products-list-container').html(textStatus + "\r\n" + errorThrown);
+                            categoryFilter.setLoading(false);
+                            // load_all_banner_images.called = false;
+                        }
+                    });
+                }
+            },
+            getSubcategoryId: function (li) {
+                var li_class = li.attr('class');
+                var search_results = li_class.match(/cat-item-(\d+)/);
+                return search_results[1];
+            },
+            setDefaultCategory: function () {
+                this.params.category = $('#category-dropdown').val();
+            },
+            setDefaultTemplate: function () {
+                this.params.template = $('#template-dropdown').val();
+            },
+            setDefaultSubcategories: function () {
+                $('#categories-sidebar .cat-item.current-cat').each(function () {
+                    categoryFilter.params.subcategories.push(categoryFilter.getSubcategoryId($(this)));
+                });
+            },
+            setDefaultSortBy: function () {
+                categoryFilter.params.sortby = $('#sort-dropdown').val();
+            },
+            setSearchQuery: function () {
+                categoryFilter.params.search = $('#sidebar-search-query').val();
+                $('#search-filter-info').html('Search: ' + $('#sidebar-search-query').val());
+                /*if( categoryFilter.params.search ){
+                    $.ajax({
+                        url: global_vars.ajax_url,
+                        data: {
+                            action: 'subcategory_filter',
+                            search: this.params.search
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            $('.cat-item').hide();
+                            var i=0;
+                            var len = data.length;
+                            for(i=0; i<len; i++){
+                                $('.cat-item-' + data[i]).show();
+                            }
+                            this.updateCategoriesBlock();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            $('#products-list-container').html(textStatus + "\r\n" + errorThrown);
+                        }
+                    });
+                }*/
+            },
+            setLoading: function (state) {
+                if (state) {
+                    $('#filter-sidebar').addClass('loading-state');
+                    $('.comment-show-more').hide();
+                } else {
+                    $('#filter-sidebar').removeClass('loading-state');
+                    $('.comment-show-more').show();
+                }
+            },
+            updateCategoriesBlock: function () {
+                var categoriesBlockItems = $('#categories-sidebar').find('.edd-taxonomy-widget > .cat-item');
+                if (categoryFilter.params.template == '') {
+                    categoriesBlockItems.removeClass('hidden');
+                } else {
+                    categoriesBlockItems.each(function () {
+                        if ($(this).hasClass('cat-item-' + categoryFilter.params.template)) {
+                            $(this).removeClass('hidden');
+                        } else {
+                            $(this).addClass('hidden').find('li.current-cat').removeClass('current-cat');
+                        }
+                    });
+                    categoryFilter.params.subcategories = [];
+                }
+            },
+            init: function () {
+                this.setDefaultCategory();
+                //this.setDefaultTemplate();
+                //this.setDefaultSubcategories();
+                //this.setDefaultSortBy();
+                this.setSearchQuery();
+                this.updateCategoriesBlock();
+                this.params.baselink = $('#pagination-container').data('base-link');
+
+                // if(categoryFilter.params.as_admin==true){
+                //     keyword_panel_init();
+                // }
+
+                $('#pagination-container').on('click', 'a', function (event) {
+                    event.preventDefault();
+                    categoryFilter.setSearchQuery();
+                    categoryFilter.params.page = parseInt( $(this).data('page') );
+                    categoryFilter.getHTML();
+                });
+
+                $('#categories-sidebar').on('click', '.cat-item > a', function (event) {
+                    event.preventDefault();
+                    var li = $(this).parent();
+                    var subcategory_id = categoryFilter.getSubcategoryId(li);
+                    if (li.hasClass('current-cat')) {
+                        categoryFilter.params.subcategories = [];
+                        li.removeClass('current-cat');
+                    } else {
+                        $('#categories-sidebar .current-cat').removeClass('current-cat');
+                        li.addClass('current-cat');
+                        categoryFilter.params.subcategories = [subcategory_id];
+                    }
+
+                    jQuery('#filter-items-container').show();
+                    jQuery('#subcategory-filter-item').show();
+                    jQuery('#subcategory-filter-info').html('Subcategory: ' + li.find('a').html() );
+                    categoryFilter.filtersCount++;
+
+                    categoryFilter.params.page = 1;
+                    categoryFilter.getHTML();
+                });
+
+                $('#sidebar-search-button').on('click', function (event) {
+                    event.preventDefault();
+                    categoryFilter.setSearchQuery();
+                    categoryFilter.getHTML();
+                });
+
+                $('#sidebar-search-query').on('keydown', function (event) {
+                    if (event.which == 13) {
+                        categoryFilter.setSearchQuery();
+                        categoryFilter.getHTML();
+                    }
+                });
+            }
+        };
+        //categoryFilter.init();
+    });
+})(jQuery);
+
+function hideFilterItem(item)
+{
+    switch(item){
+        case 'price':
+            jQuery('#price-filter-item').hide();
+            categoryFilter.params.price_min = 0;
+            categoryFilter.params.price_max = 1000;
+            categoryFilter.params.page = 1;
+            categoryFilter.setSearchQuery();
+            categoryFilter.getHTML();
+            break;
+        case 'platform':
+            jQuery('#platform-filter-item').hide();
+            categoryFilter.params.category = '';
+            categoryFilter.params.page = 1;
+            jQuery('#platform-filter .current-cat').removeClass('current-cat');
+            categoryFilter.setSearchQuery();
+            categoryFilter.getHTML();
+            break;
+        case 'template':
+            jQuery('#template-filter-item').hide();
+            jQuery('#template-filter .current-cat').removeClass('current-cat');
+            categoryFilter.params.template = '';
+            categoryFilter.updateCategoriesBlock();
+            categoryFilter.params.page = 1;
+            categoryFilter.setSearchQuery();
+            categoryFilter.getHTML();
+            break;
+        case 'subcategory':
+            jQuery('#subcategory-filter-item').hide();
+            categoryFilter.params.subcategories = [];
+            jQuery('#categories-sidebar .current-cat').removeClass('current-cat');
+            categoryFilter.params.page = 1;
+            categoryFilter.setSearchQuery();
+            categoryFilter.getHTML();
+            break;
+        case 'search':
+            location.href = 'http://denenv11.sellmyapp.com/downloads/subcategory/games/';
+            break;
+        case 'as_admin':
+            jQuery('#admin-filter-item').hide();
+            categoryFilter.params.as_admin = false;
+            break;
+    }
+    categoryFilter.filtersCount--;
+    if(categoryFilter.filtersCount==0){
+        jQuery('#filter-items-container').hide();
+    }
+}
+function filterByPlatform(item)
+{
+    categoryFilter.params.category = item.id;
+    jQuery('#platform-filter .current-cat').removeClass('current-cat');
+    jQuery('.platform-item-' + item.id).addClass('current-cat');
+    categoryFilter.params.page = 1;
+    categoryFilter.setSearchQuery();
+    categoryFilter.getHTML();
+    jQuery('#filter-items-container').show();
+    var append = 0;
+    if(jQuery('#platform-filter-item:hidden').length){
+        var append = 1;
+    }
+    jQuery('#platform-filter-item').show();
+    jQuery('#platform-filter-info').html('Platform: ' + item.label );
+    categoryFilter.filtersCount += append;
+}
+function filterAsAdmin(item)
+{
+    categoryFilter.params.as_admin = true;
+    categoryFilter.setSearchQuery();
+    categoryFilter.getHTML();
+    jQuery('#filter-items-container').show();
+    var append = 0;
+    if(jQuery('#platform-filter-item:hidden').length){
+        var append = 1;
+    }
+    jQuery('#admin-filter-item').show();
+    categoryFilter.filtersCount += append;
+}
+function filterByTemplate(item)
+{
+    categoryFilter.params.template = item.id;
+    jQuery('#template-filter .current-cat').removeClass('current-cat');
+    jQuery('.template-item-' + item.id).addClass('current-cat');
+    jQuery('#categories-sidebar').show();
+    categoryFilter.updateCategoriesBlock();
+    categoryFilter.setSearchQuery();
+    categoryFilter.params.page = 1;
+    categoryFilter.getHTML();
+    jQuery('#filter-items-container').show();
+    var append = 0;
+    if(jQuery('#template-filter-item:hidden').length){
+        var append = 1;
+    }
+    jQuery('#template-filter-item').show();
+    jQuery('#template-filter-info').html('Template: ' + item.label );
+    categoryFilter.filtersCount += append;
+}
+function setSortBy(sortby)
+{
+    jQuery('.sort-container button').removeClass('active');
+    jQuery('.' + sortby).addClass( 'active' );
+    categoryFilter.params.sortby = sortby;
+    //categoryFilter.params.baselink = '';
+    categoryFilter.setSearchQuery();
+    categoryFilter.params.page = 1;
+    categoryFilter.getHTML();
+}

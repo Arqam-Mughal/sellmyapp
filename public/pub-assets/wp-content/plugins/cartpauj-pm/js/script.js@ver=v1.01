@@ -1,0 +1,246 @@
+//START AUTO COMPLETE
+function autosuggest(link) {
+    q = document.getElementById('search-q').value;
+    // Set the random number to add to URL request
+    nocache = Math.random();
+    http.open('get', link + 'newmessage&pmjsscript=1&q=' + q + '&nocache = ' + nocache);
+    http.onreadystatechange = autosuggestReply;
+    http.send(null);
+}
+
+function createObject() {
+    var request_type;
+    var browser = navigator.appName;
+    if (browser == "Microsoft Internet Explorer") {
+        request_type = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        request_type = new XMLHttpRequest();
+    }
+    return request_type;
+}
+
+var http = createObject();
+
+function autosuggestReply() {
+    if (http.readyState == 4) {
+        var response = http.responseText;
+        e = document.getElementById('results');
+        if (response != "") {
+            e.innerHTML = response;
+            e.style.display = "block";
+        } else {
+            e.style.display = "none";
+        }
+    }
+}
+
+function fillText(v) {
+    e = document.getElementById('search-q');
+    e.value = v;
+    document.getElementById('results').style.display = "none";
+}
+
+function getQueryParam(param) {
+    var result = null,
+        tmp = [];
+    location.search
+        //.replace ( "?", "" )
+        // this is better, there might be a question mark inside
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+            tmp = item.split("=");
+            if (tmp[0] === param) result = decodeURIComponent(tmp[1]);
+        });
+    return result;
+}
+
+(function ($) {
+    // var favico = new Favico({
+    //     animation: 'none',
+    //     bgColor: '#DF121B'
+    // });
+
+    var message_update = {
+        thread_list_update: false,
+        thread_update: false,
+        block_to_update: null,
+        message_count_block: $('.messages-link .number-notification'),
+        admin_link: ajax_url,
+        thread_id: getQueryParam('id'),
+        update: function () {
+            $.ajax({
+                url: message_update.admin_link,
+                type: 'POST',
+                data: {
+                    action: 'sma_update_messages',
+                    thread_list_update: (message_update.thread_list_update) ? '1' : '0',
+                    thread_update: (message_update.thread_update) ? '1' : '0',
+                    thread_id: message_update.thread_id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data['message_count'] !== 0) {
+                        message_update.message_count_block.html(data['message_count']);
+                        message_update.message_count_block.removeClass('hidden');
+                        // favico.badge(data['message_count']);
+                    } else {
+                        message_update.message_count_block.addClass('hidden');
+                        // favico.reset();
+                    }
+                    if (message_update.thread_list_update) {
+                        $('#pm-content').html(data['thread_list']);
+                    }
+                    if (message_update.thread_update) {
+                        $('#pm_messages_table')
+                            .html(data['messages_list'])
+                            .find('.img-link').lightGallery({
+                                selector: 'this',
+                                download: false,
+                                counter: false
+                            });
+                    }
+                }
+            });
+        },
+        // update_favicon: function () {
+        //     var message_count = parseInt(this.message_count_block.html());
+        //     if (message_count > 0) {
+        //         favico.badge(message_count);
+        //     }
+        // }
+    };
+
+    // message_update.update_favicon();
+
+    window.onpageshow = function (event) {
+        // If persisted then it is in the page cache, force a reload of the page.
+        if (event.persisted) {
+            message_update.update();
+        }
+    };
+
+    function sendMessageFormSubmit(event) {
+        var form = $('#send_message_form');
+        var error_display = form.children('.error-display');
+        $('.btn-lg').val('SENDING...');
+        $('.btn-lg').attr('disabled','disabled');
+        event.preventDefault();
+        if (typeof(tinyMCE) !== 'undefined') {
+            tinyMCE.triggerSave();
+        }
+        error_display.removeClass('error');
+        var form_data = form.serialize();
+        form_data.action = 'sma_submit_message';
+        var blank_msg = $('#pm_messages_table .blank-msg').first();
+        var new_msg = blank_msg.clone().insertAfter(blank_msg);
+        var pm_text = new_msg.find('.pmtext');
+        var message_content = tinyMCE.editors['message_content'].getContent();
+        if (document.getElementById('public-thread-indicator') != null) {
+            message_content = message_content.replace(/[A-Za-z0-9._-]+@[A-Za-z0-9_-]+\.[A-Za-z0-9_.-]+/g, 'XXXXXXXXXXX');
+        }
+        pm_text.append(message_content);
+        if ($('#attachment-id').val()) {
+            $('<div class="attached">Attachment loading...</div>').appendTo(pm_text);
+        }
+        form.find('textarea').val('');
+        tinyMCE.editors['message_content'].setContent('');
+        form.find('.attachments-display').html('');
+        $.ajax({
+            url: ajax_url,
+            type: 'POST',
+            data: form_data,
+            dataType: 'json',
+            success: function (data) {
+                $('.btn-lg').val('SEND');
+                $('.btn-lg').removeAttr('disabled');
+                message_update.update();
+                if (data.success) {
+                    if (data.redirect_to) {
+                        window.location.href = data.redirect_to;
+                    } else {
+                        error_display.html('');
+                        $('#attachment-id').val('');
+                    }
+                } else if (data.reload) {
+                    window.location.reload();
+                } else if (data.error) {
+                    error_display.html(data.error);
+                }
+            }
+        });
+
+        new_msg.removeClass('blank-msg');
+        return false;
+    }
+
+    $(document).ready(function () {
+        if ($('#pm_threads_table').length > 0) {
+            message_update.thread_list_update = true;
+            message_update.block_to_update = $('#pm-content');
+        } else if ($('#pm_messages_table').length > 0) {
+            message_update.thread_update = true;
+            message_update.block_to_update = $('#pm_messages_table');
+        }
+        // window.setInterval(message_update.update, 60000);
+        $('#send_message_form').submit(sendMessageFormSubmit);
+
+        $('#attachments-display').on('click', '.remove-attachment', function () {
+            $.ajax({
+                url: ajax_url,
+                type: 'post',
+                data: {
+                    nonce: $('#send_message_form input[name="nonce"]').val(),
+                    action: 'delete_message_attachment',
+                    id: $('#attachment-id').val()
+                },
+                success: function (data) {
+                    if (data.error) {
+                        $('#send_message_form .error-display').html(data.error);
+                    } else {
+                        $('#attachment-id').val('');
+                        $('#attachments-display').html('');
+                        $('#send_message_form .max-upload-size').css('display', 'block');
+                    }
+                }
+            })
+        });
+
+        $('#pm_messages_table .img-link').lightGallery({selector: 'this', download: false, counter: false});
+
+        $(function () {
+            'use strict';
+            $('#attachment-upload').fileupload({
+                url: ajax_url,
+                dataType: 'json',
+                progressInterval: 1000,
+                formData: {
+                    nonce: $('#send_message_form input[name="nonce"]').val(),
+                    action: 'upload_message_attachment'
+                },
+                start: function (e) {
+                    $('#send_message_form .max-upload-size').css('display', 'none');
+                    $('#upload-progress').css('display', 'block');
+                },
+                done: function (e, data) {
+                    $('#upload-progress .progress-bar').css('width', 0);
+                    $('#upload-progress').css('display', 'none');
+                    if (data.result.error) {
+                        $('#send_message_form .error-display').html(data.result.error);
+                    } else {
+                        $('#attachment-id').val(data.result.attachment_id);
+                        $('#attachments-display').html(data.result.attachment_info);
+                    }
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#upload-progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                }
+            }).prop('disabled', !$.support.fileInput)
+                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        });
+    });
+})(jQuery);

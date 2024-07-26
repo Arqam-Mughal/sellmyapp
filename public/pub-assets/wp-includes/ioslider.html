@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Range Slider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+</head>
+<body>
+    <div>
+        <input id="Slider1" type="text" name="price" class="irs-hidden-input" tabindex="-1" readonly="">
+    </div>
+    <input type="hidden" id="price_min">
+    <input type="hidden" id="price_max">
+
+   
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#Slider1").ionRangeSlider({
+                min: 0,
+                max: 1000,
+                from: 0,
+                to: 1000,
+                type: 'double',
+                prefix: "$",
+                grid: false,
+                grid_num: 0,
+                hide_min_max: true,
+                hide_from_to: true,
+                onChange: function (data) {
+                    $('#price_min').val(data.from);
+                    $('#price_max').val(data.to);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

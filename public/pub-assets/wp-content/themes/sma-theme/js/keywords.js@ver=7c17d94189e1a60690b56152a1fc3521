@@ -1,0 +1,207 @@
+/**
+ * Created on 28.07.17.
+ */
+var add_positive_keyword = false;
+var add_negative_keyword = false;
+var keywords;
+keywords = {
+    initButton: function () {
+        jQuery('#add-negative-keyword').click(function(event){
+            if (add_negative_keyword) {
+                return;
+            }
+            add_negative_keyword = true;
+            event.preventDefault();
+            var app_list = [];
+            jQuery('input[name="select-app-checkbox"]:checked').each(function() {
+                app_list.push(this.value);
+            });
+            var key_string = jQuery('input[name=add-keyword]').val();
+            jQuery.ajax({
+                method: 'post',
+                url: 'wp-admin/admin-ajax.php',
+                data: {
+                    action: 'sma_add_keywords',
+                    data: {app_list : app_list,key_type: 'negative',key_string: key_string},
+                },
+                success: function(data) {
+                    add_negative_keyword = false;
+                    if(data==='1') {
+                        var app_list = [];
+                        jQuery('input[name="select-app-checkbox"]:checked').each(function () {
+                            app_list.push(this.value);
+                        });
+                        var confirmationPopupContent = jQuery('<div class="remodal delete-img-dialog">' +
+                            '<div class="text-center">' +
+                            app_list.length + ' items negated' +
+                            '</div>' +
+                            '<div class="text-center">' +
+                            '<a class="btn btn-default yes-button" href="#">Ok</a>' +
+                            '</div>' +
+                            '</div>');
+                        jQuery(document.body).append(confirmationPopupContent);
+                        confirmationPopupContent.find('.yes-button').click(function (event) {
+                            event.preventDefault();
+                            confirmationPopup.destroy();
+                            // location.reload();
+                            categoryFilter.getHTML();
+                        });
+                        var confirmationPopup = confirmationPopupContent.remodal();
+                        confirmationPopup.open();
+                    }
+                }
+            });
+        });
+
+
+        jQuery('#add-positive-keyword').click(function(event){
+            if (add_positive_keyword) {
+                return;
+            }
+            add_positive_keyword = true;
+            event.preventDefault();
+            var app_list = [];
+            jQuery('input[name="select-app-checkbox"]:checked').each(function() {
+                app_list.push(this.value);
+            });
+            var key_string = jQuery('input[name=add-keyword]').val();
+            jQuery.ajax({
+                method: 'post',
+                url: 'wp-admin/admin-ajax.php',
+                data: {
+                    action: 'sma_add_keywords',
+                    data: {app_list : app_list,key_type: 'positive',key_string: key_string},
+                },
+                success: function(data) {
+                    add_positive_keyword = false;
+                    if(data==='1') {
+                        var key_string = jQuery('input[name=add-keyword]').val();
+                        var app_list = [];
+                        jQuery('input[name="select-app-checkbox"]:checked').each(function () {
+                            app_list.push(this.value);
+                        });
+                        var confirmationPopupContent = jQuery('<div class="remodal delete-img-dialog">' +
+                            '<div class="text-center">' +
+                            app_list.length + ' added with the keyword "' + key_string + '"' +
+                            '</div>' +
+                            '<div class="text-center">' +
+                            '<a class="btn btn-default yes-button" href="#">Ok</a>' +
+                            '</div>' +
+                            '</div>');
+                        jQuery(document.body).append(confirmationPopupContent);
+                        confirmationPopupContent.find('.yes-button').click(function (event) {
+                            event.preventDefault();
+                            confirmationPopup.destroy();
+                            categoryFilter.getHTML();
+                            // location.reload();
+                        });
+                        var confirmationPopup = confirmationPopupContent.remodal();
+                        confirmationPopup.open();
+                    }
+                }
+            });
+        });
+    }
+
+};
+
+(function ($) {
+
+    $(document).ready(function () {
+
+        // $('#add-negative-keyword').click(function(event){
+        //     if (add_negative_keyword) {
+        //         return;
+        //     }
+        //     add_negative_keyword = true;
+        //     event.preventDefault();
+        //     var app_list = [];
+        //     $('input[name="select-app-checkbox"]:checked').each(function() {
+        //         app_list.push(this.value);
+        //     });
+        //     var key_string = $('input[name=add-keyword]').val();
+        //     $.ajax({
+        //         method: 'post',
+        //         url: 'wp-admin/admin-ajax.php',
+        //         data: {
+        //             action: 'sma_add_keywords',
+        //             data: {app_list : app_list,key_type: 'negative',key_string: key_string},
+        //         },
+        //         success: function(data) {
+        //             add_negative_keyword = false;
+        //             if(data==='1') {
+        //                 var app_list = [];
+        //                 $('input[name="select-app-checkbox"]:checked').each(function () {
+        //                     app_list.push(this.value);
+        //                 });
+        //                 var confirmationPopupContent = $('<div class="remodal delete-img-dialog">' +
+        //                     '<div class="text-center">' +
+        //                      app_list.length + ' items negated' +
+        //                      '</div>' +
+        //                      '<div class="text-center">' +
+        //                      '<a class="btn btn-default yes-button" href="#">Ok</a>' +
+        //                      '</div>' +
+        //                      '</div>');
+        //                 $(document.body).append(confirmationPopupContent);
+        //                 confirmationPopupContent.find('.yes-button').click(function (event) {
+        //                     event.preventDefault();
+        //                     confirmationPopup.destroy();
+        //                     location.reload();
+        //                 });
+        //                 var confirmationPopup = confirmationPopupContent.remodal();
+        //                 confirmationPopup.open();
+        //             }
+        //         }
+        //     });
+        // });
+        //
+        //
+        // $('#add-positive-keyword').click(function(event){
+        //     if (add_positive_keyword) {
+        //         return;
+        //     }
+        //     add_positive_keyword = true;
+        //     event.preventDefault();
+        //     var app_list = [];
+        //     $('input[name="select-app-checkbox"]:checked').each(function() {
+        //         app_list.push(this.value);
+        //     });
+        //     var key_string = $('input[name=add-keyword]').val();
+        //     $.ajax({
+        //         method: 'post',
+        //         url: 'wp-admin/admin-ajax.php',
+        //         data: {
+        //             action: 'sma_add_keywords',
+        //             data: {app_list : app_list,key_type: 'positive',key_string: key_string},
+        //         },
+        //         success: function(data) {
+        //             add_positive_keyword = false;
+        //             if(data==='1') {
+        //                 var key_string = $('input[name=add-keyword]').val();
+        //                 var app_list = [];
+        //                 $('input[name="select-app-checkbox"]:checked').each(function () {
+        //                     app_list.push(this.value);
+        //                 });
+        //                 var confirmationPopupContent = $('<div class="remodal delete-img-dialog">' +
+        //                      '<div class="text-center">' +
+        //                      app_list.length + ' added with the keyword "' + key_string + '"' +
+        //                      '</div>' +
+        //                      '<div class="text-center">' +
+        //                      '<a class="btn btn-default yes-button" href="#">Ok</a>' +
+        //                      '</div>' +
+        //                      '</div>');
+        //                 $(document.body).append(confirmationPopupContent);
+        //                 confirmationPopupContent.find('.yes-button').click(function (event) {
+        //                     event.preventDefault();
+        //                     confirmationPopup.destroy();
+        //                     location.reload();
+        //                 });
+        //                 var confirmationPopup = confirmationPopupContent.remodal();
+        //                 confirmationPopup.open();
+        //             }
+        //         }
+        //     });
+        // });
+
+    });
+})(jQuery);
