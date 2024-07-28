@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Otika - Admin Dashboard Template</title>
+  <title>Login - Admin Dashboard Template</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('admin-assets/assets/css/app.min.css') }}">
   <link rel="stylesheet" href="{{ asset('admin-assets/assets/bundles/bootstrap-social/bootstrap-social.css') }}">
@@ -29,11 +29,11 @@
 
               @if($errors->has('error'))
                   <div class="alert alert-danger text-center">
-                    {{ $errors->first('error') }}  
-                  </div>                  
+                    {{ $errors->first('error') }}
+                  </div>
                 @endif
 
-              <div class="card-header">  
+              <div class="card-header">
                 <h4>Login</h4>
               </div>
               <div class="card-body">
@@ -42,13 +42,13 @@
                   <div class="form-group">
                     <label for="email">Email</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" tabindex="1" required autofocus>
-                    
+
                       @if($errors->has('email'))
                   <p class="invalid-feedback">
-                    {{ $errors->first('email') }}  
-                  </div>                  
+                    {{ $errors->first('email') }}
+                  </div>
                 @endif
-                    
+
                   </div>
 
                   <div class="form-group">
@@ -63,7 +63,7 @@
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" tabindex="2" required>
 
                     @error('email')
-                    <p class="invalid-feedback">{{ $message }}</p>                
+                    <p class="invalid-feedback">{{ $message }}</p>
                     @enderror
                   </div>
                   <div class="form-group">

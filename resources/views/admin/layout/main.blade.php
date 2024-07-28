@@ -18,9 +18,9 @@
     @else
     Sell My App
     @endif
-  
+
   </title>
-  
+
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('admin-assets/assets/css/app.min.css') }}">
   <!-- Template CSS -->

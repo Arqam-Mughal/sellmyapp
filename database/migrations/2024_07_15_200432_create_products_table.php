@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('features')->nullable()->after('description');
             $table->text('updates')->nullable()->after('features');
-            $table->text('frameworks')->nullable()->after('updates');
+            $table->string('frameworks')->nullable()->after('updates');
             $table->double('price');
             $table->foreignId('platform_id')->constrained()->onDelete('cascade');
             $table->foreignId('temp_type_id')->constrained()->onDelete('cascade');

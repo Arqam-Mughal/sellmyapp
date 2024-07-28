@@ -14,7 +14,7 @@
                     <div class="card-header col-12">
                       <h4>Edit Product</h4>
                     </div>
-
+{{-- @dd($product) --}}
                       <div class="card-body">
                           <div class="row">
                               <div class="col-md-12">
@@ -58,21 +58,22 @@
                                         class="summernote" placeholder="Updates">{{ $product->updates }}</textarea>
                                 </div>
                             </div>
-                            {{-- @dd($frameworks) --}}
-{{-- @die(); --}}
+
                             <label for="">Framework</label>
-                            <select class="frameworkSelect w-100 text-gray" name="frameworks[]" multiple="multiple" placeholder="Select Framework">
-                                @if(!empty($frameworks))
-                                
-                                @foreach ($frameworks as $framework)
+                            <select class="frameworkSelect w-100" name="frameworks[]" multiple="multiple" placeholder="Select Framework">
+                                @if(!empty($product->frameworks))
+                                @php
+                                    $framework = @json_decode($product->frameworks);
+                                    // dd($framework);
+                                @endphp
+                                    @foreach ($framework as $item)
+                                        
+                                    <option selected value="{{ $item }}">{{ $item }}</option>
 
-                                    <option selected value="{{ $framework }}">{{ $framework }}</option>
+                                    @endforeach
 
-                                @endforeach
                                 @endif
-                                {{-- <option value="IOS 10.8">IOS 10.8</option>
-                                <option value="Andriod 3.4X">Andriod 3.4X</option>
-                                <option value="Unity 5.5">Unity 5.5</option> --}}
+                                
                               </select>
 
                           </div>

@@ -16,8 +16,8 @@ class AllProductsController extends Controller
         $platformSelected = '';
         $temptypeSelected = '';
         $temptypeRelatedToSelected = '';
-        
-        $products = Product::select('products.*', 'platforms.name as platformName')->leftJoin('platforms', 'platforms.id', 'products.platform_id');
+
+        $products = Product::select('products.*', 'platforms.name as platformName')->where('products.status',1)->leftJoin('platforms', 'platforms.id', 'products.platform_id');
         // dd($product);
 
         if(!empty($req->sort)){
@@ -32,8 +32,9 @@ class AllProductsController extends Controller
             }
 
 
+
             if($categorySlug != null){
-                
+
                 $subcatId = TempType::select('id')->where('slug', $categorySlug)->first();
                 $subsubcatId = TempTypesRelatedTo::select('id')->where('slug', $categorySlug)->first();
 
@@ -43,7 +44,7 @@ class AllProductsController extends Controller
                 $temptypeSelected = $subcatId;
                 // dd($temptypeSelected);
                 }elseif($subsubcatId){
-                    
+
                 $products = $products->whereIn('temp_types_related_to_id', $subsubcatId);
                 $temptypeRelatedToSelected = $subsubcatId;
                 // dd($temptypeRelatedToSelected);
@@ -57,9 +58,9 @@ class AllProductsController extends Controller
                 }
 
             }
-            
+
             if($subCategorySlug != null && $subsubCategorySlug == null){
-                
+
                 $platformCategoryId = Platform::select('id')->where('slug', $categorySlug)->first();
                 $temptypeSubCategoryId = TempType::select('id')->where('slug', $subCategorySlug)->first();
                 $tempTypesRelatedToId = TempTypesRelatedTo::select('id')->where('slug', $subCategorySlug)->first();
@@ -84,7 +85,7 @@ class AllProductsController extends Controller
                             $products = $products->whereIn('temp_type_id', $temptypeSubCategoryId)->whereIn('temp_types_related_to_id', $tempTypesRelatedToId);
                             $temptypeRelatedToSelected = $tempTypesRelatedToId;
                             $temptypeSelected = $temptypeSubCategoryId;
- 
+
                         }
                     }
                 }
@@ -134,7 +135,7 @@ class AllProductsController extends Controller
         // dd($tempTypesRelatedTo);
 
 }
-                
+
         $platformCategoryId = Platform::select('id')->where('slug', $categorySlug)->first();
         $temptypeSubCategoryId = TempType::select('id')->where('slug', $subCategorySlug)->first();
         $temptypeRelatedToId = TempTypesRelatedTo::select('id')->where('slug', $subsubCategorySlug)->first();
@@ -157,7 +158,7 @@ class AllProductsController extends Controller
         }
     }
 
-    $products = $products->paginate(4);
+    $products = $products->paginate(8);
 
         if(empty($products)){
             abort(404);

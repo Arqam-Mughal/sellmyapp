@@ -3,11 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FrontAuthController;
 use App\Http\Controllers\AllProductsController;
 use App\Http\Controllers\ProductDetailsController;
 // use App\Http\Middleware\AdminRedirectIfAuthenticated;
 
+// Route::middleware(['admin_guest'])->name('front.')->group(function(){
+
 Route::name('front.')->group(function(){
+
+Route::get('/register', [FrontAuthController::class, 'register'])->name('register');
+Route::post('/registerStore', [FrontAuthController::class, 'registerStore'])->name('registerStore');
+Route::get('/login', [FrontAuthController::class, 'login'])->name('login');
+Route::post('/authenticate', [FrontAuthController::class, 'authenticate'])->name('authenticate');
+Route::get('/logout', [FrontAuthController::class, 'logout'])->name('logout');
+
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/downloads/{slug}', [ProductDetailsController::class, 'details'])->name('product.details');
@@ -16,7 +27,9 @@ Route::get('/downloads', [AllProductsController::class, 'index'])->name('all-pro
 
 // filter routes
 Route::get('/downloads/category/{slug}', [AllProductsController::class, 'index'])->name('all-products.category');
+
 Route::get('/downloads/{categorySlug?}/subcategory/{subcategorySlug?}', [AllProductsController::class, 'index'])->name('all-products.subcategory');
+
 Route::get('/downloads/subcategory/{subcategorySlug?}', [AllProductsController::class, 'index'])->name('all-products.subcategory.default');
 
 
@@ -27,17 +40,17 @@ Route::get('/downloads/{subcategory?}/{subsubcategory?}', [AllProductsController
 Route::get('/downloads/subcategory/{subsubcategory?}', [AllProductsController::class, 'index'])->name('all-products.subcategory.subcategory.default');
 // end-filter-routes
 
+// Route::get('', [AllProductsController::class, 'index'])->name('game-template');
+
 // addCart-routes
 Route::post('/addCart', [CartController::class, 'addCart'])->name('product.cart');
 
 Route::get('/checkout', [CartController::class, 'viewCheckout'])->name('cart.viewCheckout');
 Route::delete('/cart/delete', [CartController::class, 'cartDelete'])->name('cart.delete');
 
+
 });
 
-Route::get('/login', function(){
-    return view('front.login');
-})->name('temp.login');
 
 Route::get('/sell_your_app', function(){
     return view('front.sell_your_app');
@@ -107,9 +120,7 @@ Route::get('/preparing-your-code', function(){
     return view('front.preparing-your-code');
 })->name('temp.preparing-your-code');
 
-Route::get('/register', function(){
-    return view('front.register');
-})->name('temp.register');
+
 
 Route::get('/reskin-terms&conditions', function(){
     return view('front.reskin-terms&conditions');
@@ -123,9 +134,6 @@ Route::get('/user-terms&conditions', function(){
     return view('front.user-terms&conditions');
 })->name('temp.user-terms&conditions');
 
-Route::get('/game-templates', function(){
-    return view('front.game-template');
-})->name('temp.game');
 
 Route::get('/app-templates', function(){
     return view('front.app-templates');

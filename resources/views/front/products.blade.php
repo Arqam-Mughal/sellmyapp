@@ -63,77 +63,30 @@
                     <div class="screenshot-gallery-wrapper">
                         <div class="screenshot-gallery" id="screenshot-gallery">
                             <ul>
-                                <li data-src="//www.youtube.com/embed/9E8GkpSkhnQ?rel=0" class="youtube-link"
+                                {{-- <li data-src="//www.youtube.com/embed/9E8GkpSkhnQ?rel=0" class="youtube-link"
                                     data-iframe="true" style="color:red;background-color:white" importance="low"> <span
                                         class="ic ic-youtube"></span> </li>
                                 <script>
-                                    var youtubeGalleryPath = 'https://img.youtube.com/vi/9E8GkpSkhnQ/mqdefault.jpg'; 
-                                </script>
-                                <li
-                                    data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a86bcbcee.png">
+                                    var youtubeGalleryPath = 'https://img.youtube.com/vi/9E8GkpSkhnQ/mqdefault.jpg';
+                                </script> --}}
+                                    @php
+                                    $productImageScreenshot = $item->product_images;
+                                    //   dd($productImageScreenshot);
+                                    @endphp
+                                    @for ($i = 1;$i  < count($productImageScreenshot); $i++)
+
+                                <li data-src="">
+
+
                                     <picture>
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a86bcbcee-200x105.webp "
-                                            type="image/webp">
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a86bcbcee-200x105.png"
-                                            type="image/png"><img width="100" height="53"
-                                            data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a86bcbcee-200x105.png"
-                                            class="lazy-gallery" style="background-color: #8f9a9e">
+
+                                            <img srcset="{{ asset('/uploads/product/large/'. $productImageScreenshot[$i]->image) }}" style="width:200px;background-color: #8f9a9e" alt="Featured image">
                                     </picture>
                                 </li>
-                                <li
-                                    data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a877326a2.png">
-                                    <picture>
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a877326a2-200x105.webp "
-                                            type="image/webp">
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a877326a2-200x105.png"
-                                            type="image/png"><img width="100" height="53"
-                                            data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a877326a2-200x105.png"
-                                            class="lazy-gallery" style="background-color: #8f9a9e">
-                                    </picture>
-                                </li>
-                                <li
-                                    data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a8810d6bb.png">
-                                    <picture>
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a8810d6bb-200x105.webp "
-                                            type="image/webp">
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a8810d6bb-200x105.png"
-                                            type="image/png"><img width="100" height="53"
-                                            data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a8810d6bb-200x105.png"
-                                            class="lazy-gallery" style="background-color: #8f9a9e">
-                                    </picture>
-                                </li>
-                                <li
-                                    data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a88ca7ffb.png">
-                                    <picture>
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a88ca7ffb-200x105.webp "
-                                            type="image/webp">
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a88ca7ffb-200x105.png"
-                                            type="image/png"><img width="100" height="53"
-                                            data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a88ca7ffb-200x105.png"
-                                            class="lazy-gallery" style="background-color: #8f9a9e">
-                                    </picture>
-                                </li>
-                                <li
-                                    data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a8984df6e.png">
-                                    <picture>
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a8984df6e-200x105.webp "
-                                            type="image/webp">
-                                        <source sizes="(max-width:479px) 100px,(min-width:480px) 200px"
-                                            data-srcset="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a8984df6e-200x105.png"
-                                            type="image/png"><img width="100" height="53"
-                                            data-src="https://static.sellmyapp.com/wp-content/uploads/screenshot58d8a8984df6e-200x105.png"
-                                            class="lazy-gallery" style="background-color: #8f9a9e">
-                                    </picture>
-                                </li>
+
+                                @endfor
+
+
                             </ul>
                         </div>
                         <div class="controls">
@@ -146,7 +99,7 @@
 
                 <div class="product-sidebar visible-xs">
                     <div class="price-options-block">
-                        <div class="primary-options">
+                        {{-- <div class="primary-options">
                             <div class="option-row">
                                 <label>
                                     <div class="sma-radio">
@@ -185,8 +138,9 @@
                                 </div>
                                 <div class="option-price">&#36;259</div>
                             </div>
-                        </div>
-                        <div class="secondary-options">
+                        </div> --}}
+
+                        {{-- <div class="secondary-options">
                             <div class="option-row">
                                 <label>
                                     <div class="sma-checkbox">
@@ -240,7 +194,36 @@
                                     </li>
                                 </ul>
                             </label>
+                        </div> --}}
+                        <div class="secondary-options">
+                            <div class="option-row">
+                                <label>
+                                    <div class="sma-checkbox">
+                                        <input data-price="0"
+                                               type="checkbox" name="product_secondary_option_1"
+                                               value="2"
+                                               id="product_secondary_option_2_1"/>
+
+                                        <div class="sma-checkbox-display"></div>
+                                    </div>
+                                    <span class="option-name">Request custom quote:</span>
+                                </label>
+
+                                <span class="ic ic-info info-popup-icon"
+                                          data-remodal-target="option-2-description" onclick="loadReskinAppPopup()"></span>
+                                <div class="remodal reskin-popup"
+                     data-remodal-id="option-2-description">
+                    <button data-remodal-action="close" class="remodal-close"></button>
+                    <div id="reskin-popup-content"></div>
+                </div>
+                </div>
+                            <label class="option-desc"
+                                for="product_secondary_option_2_1">
+                                <ul><li>We will provide you a custom Reskin quote price for your project</li></li></ul>
+                            </label>
                         </div>
+                        {{-- </div> --}}
+
                         <div class="separator"></div>
                         <div class="block">
                             <div class="summary-row">
@@ -248,7 +231,7 @@
                                 <div class="price">$<span class="product-total">{{ $item->price }}</span>
                                 </div>
                             </div>
-                            <a class="btn btn-default btn-lg btn-add-to-cart add-to-cart" href="#" data-id="5986"
+                            <a class="btn btn-default btn-lg btn-add-to-cart add-to-cart" href="javascript:void(0);" onclick="addToCart({{ $item->id }})" data-id="5986"
                                 data-price="89">
                                 Add to cart
                             </a>
@@ -388,7 +371,7 @@
                                                    type="checkbox" name="product_secondary_option_1"
                                                    value="2"
                                                    id="product_secondary_option_2_1"/>
-                    
+
                                             <div class="sma-checkbox-display"></div>
                                         </div>
                                         <span class="option-name">Request custom quote:</span>
@@ -445,12 +428,16 @@
                             </tr>
                             <tr>
                                 <td>Platforms</td>
+                                @if(!empty($item->frameworks))
                                 @php
                                     $items = implode(',',json_decode($item->frameworks));
+                                    // dd($items);
                                 @endphp
                                 <td>{{ $items }}</td>
+                                @endif
                             </tr>
                             <tr>
+
                                 <td>Frameworks</td>
                                 <td><a href="https://www.sellmyapp.com/downloads/category/unity/">{{ $item->platformName }}</a></td>
                             </tr>
@@ -505,7 +492,7 @@
     </script>
 
     <script type="application/ld+json">
-        { "@context": "https://schema.org/", "@type": "Product", "name": "Jelly Garden Match 3 Complete Project + EDITOR", "image": ["https://www.sellmyapp.com/wp-content/uploads/featured_image58d8a9d28032c.jpg"], "description": "Buy Jelly Garden Match 3 Complete Project + EDITOR App source code, Ready for Launch in the Best Price and only on Sell My App!", "brand": { "@type": "Thing", "name": "Candy Smith" }, "review": [ { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "3" }, "name": "Not Bad Engine But Have Troubles", "author": { "@type": "Person", "name": "Hubertas Apinys" }, "datePublished": "2016-02-16", "reviewBody": "- There is not right dokumentation of fixing facebook login button.- No tutorial how to make amazon In app purchase.+ Easy to work for making new levels.+ Fair price.+ Fast and whey good support from developers." } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "The game is great", "author": { "@type": "Person", "name": "bee101games" }, "datePublished": "2016-02-20", "reviewBody": "The game working perfectly, and the source code is easy to edit!!" } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "Excellent support in purchasing.", "author": { "@type": "Person", "name": "carol Mccoy" }, "datePublished": "2016-02-26", "reviewBody": "After being defrauded by another seller, I purchased this app from Best 2d game Studio. The best support that I have had by Sellmyapp and Best 2d game studio on an online purchase. And I normally don't do the Paypal thing." } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "PERFECT GAME IS SO EASY TO INSTALL", "author": { "@type": "Person", "name": "yazilimapp yazilimapp" }, "datePublished": "2016-05-02", "reviewBody": "Hello, I bought so far the most beautiful descriptions of the easiest games in the dozens of ready had no problem thank you very much it was very easy to install" } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "Great work", "author": { "@type": "Person", "name": "Jennie Menn" }, "datePublished": "2016-07-27", "reviewBody": "This game is s steal. great support no problems so far. However, I think that three star review was unfairly given. I see those from people all the time and they make me mad. No where does it say in the description that those things were part of what we purchased so how can the programmer be blamed that they are not there. What do people expect for such a low cost? The idea is you buy the code that works and make your own customization or pay someone else to do it if you can't. It is like buying a buying a bicycle when you want a motor cycle and then blaming the bike maker because you can not get it to run like a motor cycle. The online rating system is fake and flawed and give no indication of the quality of a product because there are so many thoughtless people in the world who love the opportunity to judge others. For me I say thanks for you heard work you saved me a small fortune." } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "", "author": { "@type": "Person", "name": "George Laskos" }, "datePublished": "2017-10-25", "reviewBody": "Excellent!" } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "", "author": { "@type": "Person", "name": "Muhammed Bıurak Çelik" }, "datePublished": "2018-04-04", "reviewBody": "Hello developersI do not have a lot of programming knowledge, but I still get learning.I have received support many times and fast and reliable supportAll the features in the application are working perfectly and I have published my application without any problemsI started making money on the first day, ads running smoothly.Regards,MBCAPP" } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "4" }, "name": "", "author": { "@type": "Person", "name": "Anas Saf" }, "datePublished": "2018-08-28", "reviewBody": "+ Good game+ Detailed documentation+ Easy level maker editor- Outdated documentation- Hard to alter/read the code" } ], "aggregateRating": { "@type": "AggregateRating", "ratingValue": "NULL", "reviewCount" : "NULL", "bestRating": "5", "worstRating": "1" }, "offers": { "@type": "Offer", "url": "https://www.sellmyapp.com/downloads/jelly-garden-match-3-complete-project-editor/", "priceCurrency": "USD", "price": "89", "availability": "https://schema.org/InStock" } } 
+        { "@context": "https://schema.org/", "@type": "Product", "name": "Jelly Garden Match 3 Complete Project + EDITOR", "image": ["https://www.sellmyapp.com/wp-content/uploads/featured_image58d8a9d28032c.jpg"], "description": "Buy Jelly Garden Match 3 Complete Project + EDITOR App source code, Ready for Launch in the Best Price and only on Sell My App!", "brand": { "@type": "Thing", "name": "Candy Smith" }, "review": [ { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "3" }, "name": "Not Bad Engine But Have Troubles", "author": { "@type": "Person", "name": "Hubertas Apinys" }, "datePublished": "2016-02-16", "reviewBody": "- There is not right dokumentation of fixing facebook login button.- No tutorial how to make amazon In app purchase.+ Easy to work for making new levels.+ Fair price.+ Fast and whey good support from developers." } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "The game is great", "author": { "@type": "Person", "name": "bee101games" }, "datePublished": "2016-02-20", "reviewBody": "The game working perfectly, and the source code is easy to edit!!" } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "Excellent support in purchasing.", "author": { "@type": "Person", "name": "carol Mccoy" }, "datePublished": "2016-02-26", "reviewBody": "After being defrauded by another seller, I purchased this app from Best 2d game Studio. The best support that I have had by Sellmyapp and Best 2d game studio on an online purchase. And I normally don't do the Paypal thing." } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "PERFECT GAME IS SO EASY TO INSTALL", "author": { "@type": "Person", "name": "yazilimapp yazilimapp" }, "datePublished": "2016-05-02", "reviewBody": "Hello, I bought so far the most beautiful descriptions of the easiest games in the dozens of ready had no problem thank you very much it was very easy to install" } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "Great work", "author": { "@type": "Person", "name": "Jennie Menn" }, "datePublished": "2016-07-27", "reviewBody": "This game is s steal. great support no problems so far. However, I think that three star review was unfairly given. I see those from people all the time and they make me mad. No where does it say in the description that those things were part of what we purchased so how can the programmer be blamed that they are not there. What do people expect for such a low cost? The idea is you buy the code that works and make your own customization or pay someone else to do it if you can't. It is like buying a buying a bicycle when you want a motor cycle and then blaming the bike maker because you can not get it to run like a motor cycle. The online rating system is fake and flawed and give no indication of the quality of a product because there are so many thoughtless people in the world who love the opportunity to judge others. For me I say thanks for you heard work you saved me a small fortune." } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "", "author": { "@type": "Person", "name": "George Laskos" }, "datePublished": "2017-10-25", "reviewBody": "Excellent!" } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "5" }, "name": "", "author": { "@type": "Person", "name": "Muhammed Bıurak Çelik" }, "datePublished": "2018-04-04", "reviewBody": "Hello developersI do not have a lot of programming knowledge, but I still get learning.I have received support many times and fast and reliable supportAll the features in the application are working perfectly and I have published my application without any problemsI started making money on the first day, ads running smoothly.Regards,MBCAPP" } , { "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": "4" }, "name": "", "author": { "@type": "Person", "name": "Anas Saf" }, "datePublished": "2018-08-28", "reviewBody": "+ Good game+ Detailed documentation+ Easy level maker editor- Outdated documentation- Hard to alter/read the code" } ], "aggregateRating": { "@type": "AggregateRating", "ratingValue": "NULL", "reviewCount" : "NULL", "bestRating": "5", "worstRating": "1" }, "offers": { "@type": "Offer", "url": "https://www.sellmyapp.com/downloads/jelly-garden-match-3-complete-project-editor/", "priceCurrency": "USD", "price": "89", "availability": "https://schema.org/InStock" } }
     </script>
 
 
@@ -527,7 +514,7 @@ function addToCart(id){
         data: {id},
         dataType: 'json',
         success:function(res){
-            
+
             if(res['status'] == true){
                 const Toast = Swal.mixin({
 					toast: true,
@@ -548,8 +535,8 @@ function addToCart(id){
                     setTimeout(() => {
 						window.location.href= "{{ route('front.cart.viewCheckout') }}";
 					}, 1000);
-       
-            }else{
+
+            }else if(res.status == false){
                 const Toast = Swal.mixin({
 					toast: true,
 					position: 'top-end',
@@ -565,8 +552,11 @@ function addToCart(id){
 					Toast.fire({
 					icon: 'warning',
 						title: res['message']
-					})                   
+					})
+            }else{
+                window.location.href = "{{ route('front.login') }}";
             }
+
         }
     });
 

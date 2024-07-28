@@ -1,7 +1,7 @@
 @extends('front.layout.main')
 
 @section('content')
-    
+
 <div class="wrapper">    <div class="home-banner">
     <div class="container">
         <h1>
@@ -37,7 +37,7 @@
 
     @if($featuredProducts->isNotEmpty())
     @foreach ($featuredProducts as $item)
-    
+
     @php
         $productImage = $item->product_images->first();
     @endphp
@@ -50,10 +50,17 @@
                 &#36;{{ $item->price }}     </div>
 
             <div class="img-contain">
+                @if(!empty($productImage))
+
                 <img width="200" height="140" src="{{ asset('/uploads/product/small/'. $productImage->image) }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" />            </div>
-    
+                @else
+
+                <img width="200" height="140" src="{{ asset('/default-150x150.png') }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" sizes="(max-width: 200px) 100vw, 200px" />            </div>
+
+                @endif
+
         </a>
-    
+
         <div class="product-label">
             <div class="product-categories">
                 <a href="https://www.sellmyapp.com/downloads/category/unity/">
@@ -78,14 +85,14 @@
     <div class="six-products-row">
         @if ($newestProducts->isNotEmpty())
         @foreach ($newestProducts as $item)
-    
+
         @php
             $productImage = $item->product_images->first();
         @endphp
-            
+
         <div class="product-box-column">
     <article class="list-product">
-    
+
         <a href="{{ route('front.product.details', $item->slug) }}">
         <div class="price-tag">
                 &#36;{{ $item->price }}</div>
@@ -98,14 +105,14 @@
                 <div class="img-contain">
                     <img width="200" height="140" src="{{ asset('/default-150x150.png') }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
                 @endif
-    
+
         </a>
-    
+
         <div class="product-label">
             {{-- <a class="hidden" href="https://www.sellmyapp.com/downloads/foosball-ai/">
                 <h3>Foosball Ai</h3>
             </a> --}}
-    
+
             <div class="product-categories">
                 <a href="https://www.sellmyapp.com/downloads/category/unity/">
                     <span class="ic ic-colored ic-unity cat-icon"></span>
@@ -115,7 +122,7 @@
                 </div>
     </article>
     </div>
-    
+
     @endforeach
     @endif
 
@@ -128,27 +135,34 @@
     <div class="six-products-row">
         @if ($newestProducts->isNotEmpty())
         @foreach ($newestProducts as $item)
-    
+
         @php
             $productImage = $item->product_images->first();
         @endphp
-            
+
         <div class="product-box-column">
     <article class="list-product">
-    
+
         <a href="{{ route('front.product.details', $item->slug) }}">
         <div class="price-tag">
                 &#36;{{ $item->price }}</div>
             <div class="img-contain">
+                @if(!empty($productImage))
+
                 <img width="200" height="140" src="{{ asset('/uploads/product/small/' . $productImage->image) }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
-    
+
+                @else
+                <img width="200" height="140" src="{{ asset('/default-150x150.png') }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
+
+                @endif
+
         </a>
-    
+
         <div class="product-label">
             {{-- <a class="hidden" href="https://www.sellmyapp.com/downloads/foosball-ai/">
                 <h3>Foosball Ai</h3>
             </a> --}}
-    
+
             <div class="product-categories">
                 <a href="https://www.sellmyapp.com/downloads/category/unity/">
                     <span class="ic ic-colored ic-unity cat-icon"></span>
@@ -158,7 +172,7 @@
                 </div>
     </article>
     </div>
-    
+
     @endforeach
     @endif
 
@@ -168,27 +182,34 @@
     <div class="five-products-row">
         @if ($newestProducts->isNotEmpty())
         @foreach ($newestProducts as $item)
-    
+
         @php
             $productImage = $item->product_images->first();
         @endphp
-            
+
         <div class="product-box-column">
     <article class="list-product">
-    
+
         <a href="{{ route('front.product.details', $item->slug) }}">
         <div class="price-tag">
                 &#36;{{ $item->price }}</div>
             <div class="img-contain">
+                @if(!empty($productImage))
+
                 <img width="200" height="140" src="{{ asset('/uploads/product/small/' . $productImage->image) }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
-    
+
+                @else
+                <img width="200" height="140" src="{{ asset('/default-150x150.png') }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
+
+                @endif
+
         </a>
-    
+
         <div class="product-label">
             {{-- <a class="hidden" href="https://www.sellmyapp.com/downloads/foosball-ai/">
                 <h3>Foosball Ai</h3>
             </a> --}}
-    
+
             <div class="product-categories">
                 <a href="https://www.sellmyapp.com/downloads/category/unity/">
                     <span class="ic ic-colored ic-unity cat-icon"></span>
@@ -198,7 +219,7 @@
                 </div>
     </article>
     </div>
-    
+
     @endforeach
     @endif
 
@@ -208,27 +229,35 @@
     <div class="five-products-row">
         @if ($newestProducts->isNotEmpty())
         @foreach ($newestProducts as $item)
-    
+
         @php
             $productImage = $item->product_images->first();
         @endphp
-            
+
         <div class="product-box-column">
     <article class="list-product">
-    
+
         <a href="{{ route('front.product.details', $item->slug) }}">
         <div class="price-tag">
                 &#36;{{ $item->price }}</div>
             <div class="img-contain">
+
+                @if(!empty($productImage))
+
                 <img width="200" height="140" src="{{ asset('/uploads/product/small/' . $productImage->image) }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
-    
+
+                @else
+                <img width="200" height="140" src="{{ asset('/default-150x150.png') }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
+
+                @endif
+
         </a>
-    
+
         <div class="product-label">
             {{-- <a class="hidden" href="https://www.sellmyapp.com/downloads/foosball-ai/">
                 <h3>Foosball Ai</h3>
             </a> --}}
-    
+
             <div class="product-categories">
                 <a href="https://www.sellmyapp.com/downloads/category/unity/">
                     <span class="ic ic-colored ic-unity cat-icon"></span>
@@ -238,7 +267,7 @@
                 </div>
     </article>
     </div>
-    
+
     @endforeach
     @endif
 
@@ -248,27 +277,33 @@
     <div class="six-products-row">
         @if ($newestProducts->isNotEmpty())
         @foreach ($newestProducts as $item)
-    
+
         @php
             $productImage = $item->product_images->first();
         @endphp
-            
+
         <div class="product-box-column">
     <article class="list-product">
-    
+
         <a href="{{ route('front.product.details', $item->slug) }}">
         <div class="price-tag">
                 &#36;{{ $item->price }}</div>
             <div class="img-contain">
+                @if(!empty($productImage))
+
                 <img width="200" height="140" src="{{ asset('/uploads/product/small/' . $productImage->image) }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
-    
+
+                @else
+                <img width="200" height="140" src="{{ asset('/default-150x150.png') }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
+                @endif
+
         </a>
-    
+
         <div class="product-label">
             {{-- <a class="hidden" href="https://www.sellmyapp.com/downloads/foosball-ai/">
                 <h3>Foosball Ai</h3>
             </a> --}}
-    
+
             <div class="product-categories">
                 <a href="https://www.sellmyapp.com/downloads/category/unity/">
                     <span class="ic ic-colored ic-unity cat-icon"></span>
@@ -278,7 +313,7 @@
                 </div>
     </article>
     </div>
-    
+
     @endforeach
     @endif
 
@@ -290,14 +325,14 @@
 
 <h2 class="featured-heading">Newest</h2>
 <div class="six-products-row">
-    
+
     @if ($newestProducts->isNotEmpty())
     @foreach ($newestProducts as $item)
 
     @php
         $productImage = $item->product_images->first();
     @endphp
-        
+
     <div class="product-box-column">
 <article class="list-product">
 
@@ -305,7 +340,14 @@
         <div class="price-tag">
             &#36;{{ $item->price }}</div>
         <div class="img-contain">
+            @if(!empty($productImage))
+
             <img width="200" height="140" src="{{ asset('/uploads/product/small/' . $productImage->image) }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
+
+            @else
+            <img width="200" height="140" src="{{ asset('/default-150x150.png') }}" class="attachment-thumbnail size-thumbnail" alt="" loading="lazy" srcset="" sizes="(max-width: 200px) 100vw, 200px" /></div>
+
+            @endif
 
     </a>
 

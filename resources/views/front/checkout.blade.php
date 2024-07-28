@@ -42,7 +42,7 @@
                             <tr class="cart-item" id="edd_cart_item_0_680433" data-download-id="680433">
                                 <td class="title-cell">
                                     <div class="thumb-wrapper">
-
+{{-- @dd($item) --}}
                                         @if(!empty($item->options->productImage->image))
 
                                         <img width="200" height="140"

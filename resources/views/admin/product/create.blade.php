@@ -19,7 +19,7 @@
                       <div class="card-body">
                           <div class="row">
                               <div class="col-md-12">
-                                
+
                                   <div class="mb-3">
                                       <label for="title">Title</label>
                                       <input type="text" name="title" id="title" class="form-control"
@@ -61,9 +61,9 @@
                             </div>
 
                             <label for="">Framework</label>
-                            {{-- <select class="frameworkSelect w-100" name="frameworks[]" multiple> --}}
+
                                 <select multiple name="frameworks[]" id="frameworkSelect" class="frameworkSelect w-100">
-                                    
+
                               </select>
 
                           </div>
@@ -100,10 +100,10 @@
                         </div>
                       </div>
 
-                      
+
 
                   </div>
-                
+
               </div>
               <div class="col-md-4">
                   <div class="card mb-3">
@@ -128,7 +128,7 @@
                                 @foreach ($platforms as $item)
 
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    
+
                                 @endforeach
                                 @endif
 
@@ -148,8 +148,8 @@
                                   @if($temptypes->isNotEmpty())
                                   @foreach ($temptypes as $items)
 
-                                  <option value="{{ $items->id }}">{{ $items->name }}</option>                                    
-                                  
+                                  <option value="{{ $items->id }}">{{ $items->name }}</option>
+
                                   @endforeach
                                   @endif
 
@@ -164,8 +164,8 @@
                                   {{-- @if($TempTypesRelatedTo->isNotEmpty())
                                   @foreach ($TempTypesRelatedTo as $items)
 
-                                  <option value="{{ $items->id }}">{{ $items->name }}</option>                                    
-                                  
+                                  <option value="{{ $items->id }}">{{ $items->name }}</option>
+
                                   @endforeach
                                   @endif --}}
                               </select>
@@ -189,7 +189,7 @@
               </div>
           </div>
 
-          
+
       </div>
   </form>
   <!-- /.card -->
@@ -245,7 +245,7 @@
           $('input[type="text"], select').removeClass('is-invalid');
 
                 $.each(errors, function(key, value){
-                    $(`#${key}`).addClass('is-invalid').siblings('p').addClass('text-danger').html(value);                    
+                    $(`#${key}`).addClass('is-invalid').siblings('p').addClass('text-danger').html(value);
                 });
 
         }
@@ -296,7 +296,7 @@ $.ajax({
             // console.log(response);
 
             $('#temptype_related_to').find("option").not(":first").remove();
-            
+
 
             $.each(response["TempTypesRelatedTo"], function(key, item){
                 $("#temptype_related_to").append(`<option value='${item.id}'>${item.name}</option>`)
@@ -313,7 +313,7 @@ $.ajax({
   $('#title').change(function(){
     $('#sub').prop('disabled', true);
     var title = $(this).val();
-    
+
     $.ajax({
       url: '{{ route("getSlug") }}',
       type: 'get',
@@ -366,7 +366,7 @@ $.ajax({
 
                 $('#product-gallery').append(html);
             },
-            
+
             complete: function(file){
                 this.removeFile(file);
             }
@@ -384,16 +384,23 @@ $(document).ready(function(){
         tags: true,
         multiple: true,
         minimumInputLength: 3,
-        processResults: function (res) {
+        minimumResultsForSearch: 10,
+        processResults: function (data) {
+            // console.log(data);
             return {
-                results: res.tags
+                results: data.tags
             };
+
         }
     }
-}); 
+
 });
 
-</script> 
+});
+
+
+
+</script>
 @endsection
 
 @section('title', 'Product')
