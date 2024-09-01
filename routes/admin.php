@@ -12,10 +12,11 @@ use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\TempTypesRelatedToController;
 
-Route::middleware(['admin_guest'])->prefix('admin')->name('admin.')->group(function(){
+Route::middleware(['admin_guest'])->controller(AdminLoginController::class)->prefix('admin')->name('admin.')->group(function(){
 
-Route::get('/login', [AdminLoginController::class, 'login'])->name('login');
-Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('authenticate');
+Route::get('/login', 'login')->name('login');
+Route::post('/authenticate', 'authenticate')->name('authenticate');
+// Route::get('/forgot-password', 'login')->name('forgot');
 
 });
 
@@ -74,8 +75,8 @@ Route::post('/temp-images', [TempImageController::class, 'create'])->name('temp-
 
 Route::get('/getFrameworks', [ProductController::class, 'getFrameworks'])->name('getFrameworks');
 
-    
-   
+
+
 
 });
 

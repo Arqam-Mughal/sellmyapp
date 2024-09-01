@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\FrontResponseController;
 
@@ -22,7 +23,7 @@ class FrontAuthController extends FrontResponseController
 
        $validator = Validator::make($request->all(),[
             'name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ], ['name.required' => ':attribute is strictly required!',
@@ -50,16 +51,21 @@ class FrontAuthController extends FrontResponseController
 
     public function login(Request $request){
         // dd($request->intented);
+        // dd(session('intented'));
+
         if(Auth::check()){
             return redirect()->route('front.home');
         }
-        return view('front.login', ['intented' => $request->intented]);
+        // return view('front.login', ['intented' => $request->intented]);
+        return view('front.login');
 
     }
 
     public function authenticate(Request $request){
 
         // dd($request->intented);
+        // dd(session());
+
         $validator = Validator::make($request->all(),[
             'name' => 'required|string',
             'password' => 'required',
@@ -70,7 +76,7 @@ class FrontAuthController extends FrontResponseController
     );
 
     if($validator->passes()){
-        // dd($request->intented);
+
         if(Auth::attempt(['name' => $request->name, 'password' => $request->password])){
 
             $intendedUrl = $request->input('intented', route('front.home'));
@@ -95,4 +101,23 @@ class FrontAuthController extends FrontResponseController
         return redirect()->route('front.login');
 
     }
+
+    public function sendResetEmail(Request $request){
+        // dd('data');
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $user = User::where('email',$request->email)->first();
+        if($user){
+            Password::sendResetLink($request->only('email'));
+            session()->flash('success','Reset Link Sent to your email');
+
+            return redirect()->route('front.login');
+        }else{
+            session()->flash('error','Email Not Match');
+            return back();
+        }
+
+        }
 }

@@ -19,6 +19,11 @@ Route::post('/authenticate', [FrontAuthController::class, 'authenticate'])->name
 Route::get('/logout', [FrontAuthController::class, 'logout'])->name('logout');
 
 
+Route::get('/forgot-password', [FrontAuthController::class, 'login'])->name('forgot');
+Route::post('/sendResetEmail', [FrontAuthController::class, 'sendResetEmail'])->name('sendResetEmail');
+Route::post('/reset-password', [FrontAuthController::class, 'reset'])->name('reset');
+
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/downloads/{slug}', [ProductDetailsController::class, 'details'])->name('product.details');

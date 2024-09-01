@@ -11,6 +11,7 @@
                   </div>
         @endif
 
+        @if(request()->routeIs('front.login'))
         <h1 class="underlined-title">Log In</h1>
         <div class="login-form-wrapper" id="theme-my-login">
             <p class="sign-in-text">Sign-in to your SellMyApp account</p>
@@ -34,16 +35,13 @@
                     <p class="text-danger">{{ $message }}</p>
                     @enderror
 
-                <label for="bot_question">Security question:<br />
+                {{-- <label for="bot_question">Security question:<br />
                     <strong>How much is 5 + 1?</strong><br />
-                </label>
+                </label> --}}
 
-                <input type="text" name="bot_question" id="bot_question" class="input" autocomplete="off" value=""
-                    size="20" />
+                {{-- <input type="text" name="bot_question" id="bot_question" class="input" autocomplete="off" value=""
+                    size="20" /> --}}
                 <input type="hidden" name="bot_question_number" class="input" value="5" />
-
-                <input type="hidden" name="_wp_original_http_referer"
-                    value="https://www.sellmyapp.com/downloads/sweet-sugar-match-3-mini-game/" />
 
                 <div class="form-row remember-me-row">
                     <label>
@@ -62,9 +60,59 @@
                 <div class="form-row">
                     <a href="{{ route('front.register') }}" id="signup_change_tooltip">I don't have an account</a>
                 </div>
-                <a href="#" class="small-grey-link">Forgot your password?</a>
+                <a href="{{ route('front.forgot') }}" class="small-grey-link">Forgot your password?</a>
             </form>
         </div>
+
+        @elseif(request()->routeIs('front.reset'))
+
+        <h1 class="underlined-title">Log In</h1>
+        <div class="login-form-wrapper" id="theme-my-login">
+            <p class="sign-in-text">Sign-in to your SellMyApp account</p>
+            <form class="login-form" name="loginform" id="loginform" action="{{ route('front.authenticate') }}"
+                method="post">
+
+                @csrf
+                <div class="form-row" style="display: none">
+                    or
+                </div>
+
+                <input type="password" name="reset-password" id="user_pass" class="input form-control @error('reset-password')is-invalid @enderror" value="" size="20"
+                    placeholder="Enter new Password" />
+
+                    @error('reset-password')
+                    <p class="text-danger">{{ $message }}</p>
+                    @enderror
+
+                <input class="btn btn-lg btn-default" type="submit" name="wp-submit" id="wp-submit" value="Reset" />
+
+            </form>
+        </div>
+
+        @elseif(request()->routeIs('front.forgot'))
+
+        <h1 class="underlined-title">Forgot Password</h1>
+        <div class="login-form-wrapper" id="theme-my-login">
+            <p class="sign-in-text">Enter Your Email</p>
+            <form class="login-form" name="loginform" id="loginform" action="{{ route('front.sendResetEmail') }}"
+                method="post">
+
+                @csrf
+                <div class="form-row" style="display: none">
+                    or
+                </div>
+                <input type="email" name="email" value="{{ old('email') }}" id="user_login" class="input form-control @error('email')is-invalid @enderror" value="" size="20"
+                    placeholder="Enter Your Email" />
+                @error('email')
+                <p class="text-danger">{{ $message }}</p>
+                @enderror
+
+                <input class="btn btn-lg btn-default" type="submit" name="wp-submit" id="wp-submit" value="Send the Reset Link" />
+
+
+            </form>
+        </div>
+        @endif
 
     </div>
 </div><!-- wrapper -->

@@ -77,7 +77,7 @@
 
   </div>
 <div class="text-center">
-    <a class="btn btn-default btn-lg" href="https://www.sellmyapp.com/downloads/">View all apps</a>
+    <a class="btn btn-default btn-lg" href="{{ route('front.all-products') }}">View all apps</a>
 </div>
 
 <div class="container">

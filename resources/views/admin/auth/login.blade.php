@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="{{ asset('admin-assets/assets/css/components.css') }}">
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{ asset('admin-assets/assets/css/custom.css') }}">
-  <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+  <link rel='shortcut icon' type='image/x-icon' href='{{ asset("admin-assets/assets/img/favicon-sellmyapp.ico") }}' />
 </head>
 
 <body>

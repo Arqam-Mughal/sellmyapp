@@ -6,9 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^2.2",
         "hardevine/shoppingcart": "^3.3",
         "intervention/image": "^3.7",
         "laravel/framework": "^11.9",
+        "laravel/jetstream": "^5.1",
         "laravel/tinker": "^2.9",
         "spatie/laravel-permission": "^6.9"
     },

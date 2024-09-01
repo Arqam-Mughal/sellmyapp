@@ -225,7 +225,7 @@
 
                                         @if($tempTypesRelatedTo->isNotEmpty())
                                         @foreach ($tempTypesRelatedTo as $tempTypeRelatedTo)
-                                      
+
                                         @if(!empty($platformSelected))
                                         @php
 
@@ -236,14 +236,14 @@
                                         @endif
 
                                         @if(!empty($temptypeSelected))
-                                        
+
                                         @php
 
-                                            $tempSlug = App\Models\TempType::select('slug')->where('id', $temptypeSelected->id)->first();  
+                                            $tempSlug = App\Models\TempType::select('slug')->where('id', $temptypeSelected->id)->first();
                                             // dd($tempSlug);
-                                        @endphp      
+                                        @endphp
                                         @endif
-                                        
+
                                        @if(!empty($platformSelected) && empty($temptypeSelected))
 
                                     @if(!empty($temptypeRelatedToSelected))
@@ -270,7 +270,7 @@
                                     @elseif(!empty($temptypeSelected) && empty($platformSelected))
 
                                     @if(!empty($temptypeRelatedToSelected))
-                                    
+
                                         <span class="menulist-item template-item-119">
 
                                             <a href="{{ route('front.all-products.subcategory.subcategory',  [$tempSlug->slug, $tempTypeRelatedTo->slug]) }}"
@@ -290,7 +290,7 @@
                                 </span>
 
                                 @endif
-                                    
+
 
                                     @elseif(!empty($temptypeSelected) && !empty($platformSelected))
 
@@ -360,7 +360,7 @@
                 </div>
             </div>
 
-            
+
             <div class="col-sm-15 col-md-16 products-list-container" id="products-list-container">
                 {{-- <div class="col-sm-20">
                     <h1 class="underlined-title page-title">
@@ -440,7 +440,7 @@
         //         dataType: 'json',
         //         success: function(res){
 
-                    
+
 
         //         }, error: function(){
         //             console.log('something went wrong!')
@@ -456,7 +456,7 @@
 
         });
 
-            
+
     // $("#Slider1").ionRangeSlider();
     $("#Slider1").ionRangeSlider({
     min: 0,
@@ -475,7 +475,7 @@
         $('#price_max').val(data.to);
     }
     // ,onFinish: function (data) {
-    //         apply_filters();   
+    //         apply_filters();
     // }
 });
 
@@ -508,10 +508,7 @@ if(storedData){
 
 if (slider.result.from > 0 || slider.result.to < 1000) {
         url += "&price_min=" + slider.result.from + "&price_max=" + slider.result.to;
-    } else if (slider.result.to < 1000) {
-        url += "&price_max=" + slider.result.to;
     }
-
 
 // alert(url);
 window.location.href = url;
